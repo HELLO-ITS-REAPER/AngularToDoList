@@ -1,0 +1,15 @@
+/* task-list.component.css */
+.completed-task {
+    text-decoration: line-through;
+    color: green;
+  }
+  
+/* Adjust spacing between task description and due date */
+ul li label {
+  display: flex;
+  align-items: center;
+}
+
+ul li span {
+  margin-right: 10px; /* Add spacing between task description and checkbox */
+}

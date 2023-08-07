@@ -1,2 +1,15 @@
-<h1>{{title}}</h1>
-<h3>Display the lists here...</h3>
+<div *ngFor="let taskList of taskLists">
+    <h1>{{ taskList.title }}</h1>
+    <p>{{ taskList.description }}</p>
+    <ul>
+        <li *ngFor="let task of taskList.tasks">
+            <label>
+                <input type="checkbox" [(ngModel)]="task.completed" />
+                <span [ngClass]="{'completed-task': task.completed}">{{ task.description }}</span>
+                <span class="due-date" *ngIf="task.dueDate">Due: {{ task.dueDate | date }}</span>
+                <button (click)="taskListService.deleteTask(taskList.id, task.id)">remove</button>
+            </label>
+        </li>
+    </ul>
+    <hr>
+</div>
