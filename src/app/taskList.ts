@@ -53,7 +53,7 @@ export const LISTS: TaskList[] = [
         ],
     },
     {
-        id: 1,
+        id: 2,
         title: 'Tirsdag',
         description: 'Hvad skal jeg lave om tirsdagen',
         dueDate: new Date('2023-08-08'), // Make sure to use the correct date format (YYYY-MM-DD)

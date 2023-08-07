@@ -7,6 +7,7 @@
                 <input type="checkbox" [(ngModel)]="task.completed" />
                 <span [ngClass]="{'completed-task': task.completed}">{{ task.description }}</span>
                 <span class="due-date" *ngIf="task.dueDate">Due: {{ task.dueDate | date }}</span>
+                <button (click)="taskListService.deleteTask(taskList.id, task.id)">remove</button>
             </label>
         </li>
     </ul>

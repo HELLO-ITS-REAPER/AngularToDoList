@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Task, TaskList } from './taskList';
-import { LISTS } from './taskList';
+import { BehaviorSubject } from 'rxjs';
+import { LISTS, Task, TaskList } from './taskList';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskListService {
   private taskLists: TaskList[] = [];
-  constructor() { }
+  private taskListSubject: BehaviorSubject<TaskList[]> = new BehaviorSubject<TaskList[]>([]);
+  constructor() {
+    this.taskLists = LISTS;
+    this.taskListSubject.next(this.taskLists);
+  }
 
   getAllTaskLists(): TaskList[] {
     return LISTS;
@@ -31,21 +35,27 @@ export class TaskListService {
       if (taskIndex !== -1) {
         taskList.tasks[taskIndex] = updatedTask;
       }
+      else {
+        taskList.tasks[taskIndex].completed = updatedTask.completed = false;
+      }
     }
+    this.taskListSubject.next(this.taskLists); // Notify subscribers about the change
   }
 
   deleteTaskList(taskListId: number): void {
     this.taskLists = this.taskLists.filter((taskList) => taskList.id !== taskListId);
   }
 
-  delteTask(taskListId: number, taskId: number): void {
+  deleteTask(taskListId: number, taskId: number): void {
     const taskListIndex = this.taskLists.findIndex((taskList) => taskList.id === taskListId);
     if (taskListIndex !== -1) {
       const taskIndex = this.taskLists[taskListIndex].tasks.findIndex((task) => task.id === taskId);
       if (taskIndex !== -1) {
         this.taskLists[taskListIndex].tasks.splice(taskIndex, 1);
+        this.taskListSubject.next(this.taskLists); // Notify subscribers about the change
       }
     }
+    console.log('Delete task with ID:', taskId, 'from list with ID:', taskListId);
   }
 
   addTaskToList(taskListId: number, newTask: Task): void {
