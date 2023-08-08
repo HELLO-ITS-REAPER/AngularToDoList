@@ -13,8 +13,27 @@ export class TaskListService {
     this.taskListSubject.next(this.taskLists);
   }
 
+  getTaskById(listId: number, taskId: number): Task | undefined {
+    const taskList = this.taskLists.find(list => list.id === listId);
+    if (taskList) {
+      return taskList.tasks.find(task => task.id === taskId);
+    }
+    return undefined; // List or task not found
+  }
+
   getAllTaskLists(): TaskList[] {
     return LISTS;
+  }
+
+  // task-list.service.ts
+  getListIdForTask(taskId: number): number | undefined {
+    for (const taskList of this.taskLists) {
+      const task = taskList.tasks.find(task => task.id === taskId);
+      if (task) {
+        return taskList.id;
+      }
+    }
+    return undefined; // Task not found
   }
 
   addTaskList(newTaskList: TaskList): void {

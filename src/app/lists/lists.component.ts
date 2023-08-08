@@ -12,12 +12,15 @@ import { TaskList } from '../taskList';
 })
 export class ListsComponent {
   taskLists: TaskList[] = [];
+  
 
   constructor(public taskListService: TaskListService) { }
 
   ngOnInit(): void {
     this.taskLists = this.taskListService.getAllTaskLists();
   }
+
+  
 
   title = 'My lists';
 }
