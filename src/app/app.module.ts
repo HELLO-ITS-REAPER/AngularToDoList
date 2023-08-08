@@ -6,12 +6,14 @@ import { HeaderComponent } from './header/header.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ListsComponent } from './lists/lists.component';
 import { FormsModule } from '@angular/forms';
+import { DetailedTaskComponent } from './detailed-task/detailed-task.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    ListsComponent
+    ListsComponent,
+    DetailedTaskComponent
   ],
   imports: [
     BrowserModule,

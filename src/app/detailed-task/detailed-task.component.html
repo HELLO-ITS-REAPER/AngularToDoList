@@ -1,0 +1,7 @@
+<h2>Task Details</h2>
+<div *ngIf="task">
+  <h2>{{ task.description }}</h2>
+  <p>Due Date: {{ task.dueDate | date }}</p>
+  <p>Completed: {{ task.completed }}</p>
+  <!-- Display other task details as needed -->
+</div>

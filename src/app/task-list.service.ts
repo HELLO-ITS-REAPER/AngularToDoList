@@ -13,6 +13,14 @@ export class TaskListService {
     this.taskListSubject.next(this.taskLists);
   }
 
+  getTaskById(listId: number, taskId: number): Task | undefined {
+    const taskList = this.taskLists.find(list => list.id === listId);
+    if (taskList) {
+      return taskList.tasks.find(task => task.id === taskId);
+    }
+    return undefined; // List or task not found
+  }  
+
   getAllTaskLists(): TaskList[] {
     return LISTS;
   }
