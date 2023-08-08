@@ -1,7 +1,31 @@
 <h2>Task Details</h2>
-<div *ngIf="task">
+<div *ngIf="task; else notFound">
   <h2>{{ task.description }}</h2>
   <p>Due Date: {{ task.dueDate | date }}</p>
   <p>Completed: {{ task.completed }}</p>
   <!-- Display other task details as needed -->
+
+  <ng-container *ngIf="!editing">
+    <button (click)="toggleEdit()">Edit</button>
+  </ng-container>
+
+  <ng-container *ngIf="editing">
+    <form (ngSubmit)="saveChanges()" #editForm="ngForm">
+      <label>Description:
+        <input type="text" [(ngModel)]="task.description" name="description" required />
+      </label>
+      <label>Due Date:
+        <input type="date" [(ngModel)]="task.dueDate" name="dueDate" />
+      </label>
+      <label>Completed:
+        <input type="checkbox" [(ngModel)]="task.completed" name="completed" />
+      </label>
+      <!-- Add more fields for other task properties as needed -->
+      <button type="submit">Save</button>
+      <button type="button" (click)="cancelEdit()">Cancel</button>
+    </form>
+  </ng-container>
 </div>
+<ng-template #notFound>
+  <p>Task not found.</p>
+</ng-template>
