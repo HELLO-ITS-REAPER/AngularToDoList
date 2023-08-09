@@ -13,3 +13,7 @@ ul li label {
 ul li span {
   margin-right: 10px; /* Add spacing between task description and checkbox */
 }
+
+.newTask {
+  margin-right: 10px;
+}

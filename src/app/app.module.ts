@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { ListsComponent } from './lists/lists.component';
 import { FormsModule } from '@angular/forms';
 import { DetailedTaskComponent } from './detailed-task/detailed-task.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { DetailedTaskComponent } from './detailed-task/detailed-task.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -17,7 +17,7 @@ enum Priority {
 export interface Task {
     id: number;
     description: string;
-    dueDate?: Date;
+    dueDate: Date;
     completed: boolean;
 }
 

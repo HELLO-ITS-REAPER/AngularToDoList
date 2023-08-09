@@ -36,6 +36,19 @@ export class TaskListService {
     return undefined; // Task not found
   }
 
+  getLatestTaskId(taskListId: number): number {
+    const taskList = this.getTaskListById(taskListId);
+    if (taskList) {
+      const latestTask = taskList.tasks.reduce((prevTask, currentTask) => (prevTask.id > currentTask.id ? prevTask : currentTask), { id: 0 });
+      return latestTask.id;
+    }
+    return 0;
+  }
+
+  getTaskListById(taskListId: number): TaskList | undefined {
+    return this.taskLists.find(taskList => taskList.id === taskListId);
+  }
+
   addTaskList(newTaskList: TaskList): void {
     this.taskLists.push(newTaskList);
   }

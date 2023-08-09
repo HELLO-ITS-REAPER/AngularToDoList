@@ -1,4 +1,4 @@
-<div *ngFor="let taskList of taskLists">
+<div *ngFor="let taskList of taskLists; let i = index">
     <h1>{{ taskList.title }}</h1>
     <p>{{ taskList.description }}</p>
     <ul>
@@ -12,5 +12,12 @@
             </label>
         </li>
     </ul>
+    <form (ngSubmit)="addTask(taskList.id)" [formGroup]="taskFormGroups[i]">
+        <input class="newTask" placeholder="description" type="text" required formControlName="description">
+        <input class="newTask" placeholder="due date" type="date" required formControlName="dueDate">
+        <label>completed</label>
+        <input class="newTask" type="checkbox" formControlName="completed">
+        <input type="submit" value="add task">
+    </form>
     <hr>
 </div>
