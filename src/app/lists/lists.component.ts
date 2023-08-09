@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { LISTS, Task } from '../taskList';
+import { Task } from '../taskList';
 import { TaskListService } from '../task-list.service';
 import { TaskList } from '../taskList';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -9,20 +9,20 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   selector: 'app-lists',
   templateUrl: './lists.component.html',
   styleUrls: ['./lists.component.css'],
-  providers: [TaskListService] // Maybe remove later
+  providers: [TaskListService]
 })
-export class ListsComponent {
+export class ListsComponent implements OnInit {
   taskFormGroups: FormGroup[] = [];
   taskLists: TaskList[] = [];
   filteredTaskLists: TaskList[] = [];
   searchInput: string = '';
+  orderBy: string = 'id';
 
-  constructor(public taskListService: TaskListService, private formBuilder: FormBuilder) { }
+  constructor(public taskListService: TaskListService, private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.taskLists = this.taskListService.getAllTaskLists();
-    this.filteredTaskLists = this.taskLists.slice(); // Initialize with all task lists
-    // Initialize form groups for each task list
+    this.filteredTaskLists = this.taskLists.slice();
     for (const taskList of this.taskLists) {
       const formGroup = this.formBuilder.group({
         description: '',
@@ -32,8 +32,6 @@ export class ListsComponent {
       this.taskFormGroups.push(formGroup);
     }
   }
-
-  newTask: Task = { id: 0, description: '', dueDate: new Date(), completed: false };
 
   addTask(listId: number) {
     const latestTaskId = this.taskListService.getLatestTaskId(listId);
@@ -47,7 +45,6 @@ export class ListsComponent {
 
     this.taskListService.addTaskToList(listId, taskToAdd);
 
-    // Reset the form after adding the task
     this.taskFormGroups[listId - 1].reset({
       description: '',
       dueDate: new Date(),
@@ -57,12 +54,19 @@ export class ListsComponent {
 
   searchFilter(): void {
     if (this.searchInput) {
-      this.filteredTaskLists = this.taskLists.filter(taskList =>
-        taskList.title.toLowerCase().includes(this.searchInput.toLowerCase())
-      );
+      this.filteredTaskLists = this.taskLists.map(taskList => ({
+        ...taskList,
+        tasks: taskList.tasks.filter(task =>
+          task.description.toLowerCase().includes(this.searchInput.toLowerCase())
+        )
+      }));
     } else {
-      this.filteredTaskLists = this.taskLists.slice(); // Show all task lists if search input is empty
+      this.filteredTaskLists = this.taskLists.slice();
     }
+  }
+
+  compareTasks(a: Task, b: Task): number {
+    return a.description.localeCompare(b.description);
   }
 
   title = 'My lists';
