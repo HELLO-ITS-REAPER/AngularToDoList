@@ -1,4 +1,9 @@
-<div *ngFor="let taskList of taskLists; let i = index">
+<form (ngSubmit)="searchFilter()" #searchForm="ngForm">
+    <input placeholder="Search for list" name="searchInput" type="text" [(ngModel)]="searchInput">
+    <input type="submit" value="Search">
+</form>
+
+<div *ngFor="let taskList of filteredTaskLists; let i = index">
     <h1>{{ taskList.title }}</h1>
     <p>{{ taskList.description }}</p>
     <ul>

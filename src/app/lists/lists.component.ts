@@ -12,14 +12,16 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   providers: [TaskListService] // Maybe remove later
 })
 export class ListsComponent {
-  taskLists: TaskList[] = [];
   taskFormGroups: FormGroup[] = [];
+  taskLists: TaskList[] = [];
+  filteredTaskLists: TaskList[] = [];
+  searchInput: string = '';
 
   constructor(public taskListService: TaskListService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.taskLists = this.taskListService.getAllTaskLists();
-
+    this.filteredTaskLists = this.taskLists.slice(); // Initialize with all task lists
     // Initialize form groups for each task list
     for (const taskList of this.taskLists) {
       const formGroup = this.formBuilder.group({
@@ -30,9 +32,9 @@ export class ListsComponent {
       this.taskFormGroups.push(formGroup);
     }
   }
-  
+
   newTask: Task = { id: 0, description: '', dueDate: new Date(), completed: false };
-  
+
   addTask(listId: number) {
     const latestTaskId = this.taskListService.getLatestTaskId(listId);
 
@@ -51,6 +53,16 @@ export class ListsComponent {
       dueDate: new Date(),
       completed: false
     });
+  }
+
+  searchFilter(): void {
+    if (this.searchInput) {
+      this.filteredTaskLists = this.taskLists.filter(taskList =>
+        taskList.title.toLowerCase().includes(this.searchInput.toLowerCase())
+      );
+    } else {
+      this.filteredTaskLists = this.taskLists.slice(); // Show all task lists if search input is empty
+    }
   }
 
   title = 'My lists';
