@@ -50,6 +50,12 @@ export const LISTS: TaskList[] = [
                 dueDate: new Date('2023-08-07'),
                 completed: false,
             },
+            {
+                id: 4,
+                description: 'Angry birds',
+                dueDate: new Date('2023-08-07'),
+                completed: false,
+            },
         ],
     },
     {
