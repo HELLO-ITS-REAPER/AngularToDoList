@@ -2,15 +2,11 @@
     <input placeholder="Search for list" name="searchInput" type="text" [(ngModel)]="searchInput">
     <input type="submit" value="Search">
 </form>
-<select [(ngModel)]="orderBy" name="orderByInput">
-    <option selected value="id">old > new</option>
-    <option value="description">description</option>
-</select>
 <div *ngFor="let taskList of filteredTaskLists; let i = index">
     <h1>{{ taskList.title }}</h1>
     <p>{{ taskList.description }}</p>
     <ul>
-        <li *ngFor="let task of taskList.tasks.slice().sort(compareTasks)">
+        <li *ngFor="let task of taskList.tasks.slice()">
             <label>
                 <input type="checkbox" [(ngModel)]="task.completed" />
                 <span [ngClass]="{'completed-task': task.completed}">{{ task.description }}</span>

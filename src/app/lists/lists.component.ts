@@ -4,6 +4,7 @@ import { Task } from '../taskList';
 import { TaskListService } from '../task-list.service';
 import { TaskList } from '../taskList';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ApiService } from '../api.service';
 
 @Component({
   selector: 'app-lists',
@@ -16,22 +17,31 @@ export class ListsComponent implements OnInit {
   taskLists: TaskList[] = [];
   filteredTaskLists: TaskList[] = [];
   searchInput: string = '';
-  orderBy: string = 'id';
 
-  constructor(public taskListService: TaskListService, private formBuilder: FormBuilder) {}
+  constructor(public taskListService: TaskListService, public apiService: ApiService, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    this.taskLists = this.taskListService.getAllTaskLists();
-    this.filteredTaskLists = this.taskLists.slice();
-    for (const taskList of this.taskLists) {
-      const formGroup = this.formBuilder.group({
-        description: '',
-        dueDate: new Date(),
-        completed: false
-      });
-      this.taskFormGroups.push(formGroup);
-    }
+    this.apiService.getToDoLists().subscribe(
+      (data: TaskList[]) => {
+        this.taskLists = data;
+        this.filteredTaskLists = this.taskLists.slice();
+  
+        for (const taskList of this.taskLists) {
+          const formGroup = this.formBuilder.group({
+            description: '',
+            dueDate: new Date(),
+            completed: false
+          });
+          this.taskFormGroups.push(formGroup);
+        }
+      },
+      (error) => {
+        console.error('API Error:', error);
+      }
+    );
   }
+  
+  
 
   addTask(listId: number) {
     const latestTaskId = this.taskListService.getLatestTaskId(listId);
@@ -64,10 +74,6 @@ export class ListsComponent implements OnInit {
       this.filteredTaskLists = this.taskLists.slice();
     }
   }
-
-  compareTasks(a: Task, b: Task): number {
-    return a.description.localeCompare(b.description);
-  }
-
+  
   title = 'My lists';
 }
