@@ -25,7 +25,7 @@ export class ListsComponent implements OnInit {
       (data: TaskList[]) => {
         this.taskLists = data;
         this.filteredTaskLists = this.taskLists.slice();
-  
+
         for (const taskList of this.taskLists) {
           const formGroup = this.formBuilder.group({
             description: '',
@@ -40,21 +40,30 @@ export class ListsComponent implements OnInit {
       }
     );
   }
-  
-  
 
-  addTask(listId: number) {
-    const latestTaskId = this.taskListService.getLatestTaskId(listId);
-
-    const taskToAdd: Task = {
-      id: latestTaskId + 1,
+  createTask(listId: number) {
+    const newTask: Task = {
+      id: 0,
       description: this.taskFormGroups[listId - 1].value.description,
       dueDate: this.taskFormGroups[listId - 1].value.dueDate,
       completed: this.taskFormGroups[listId - 1].value.completed
     };
 
-    this.taskListService.addTaskToList(listId, taskToAdd);
-
+    this.apiService.createTask(listId, newTask).subscribe(
+      () => {
+        console.log('Task created successfully');
+        // Find the task list
+        const taskList = this.taskLists.find(list => list.id === listId);
+        // Add the new task to the task list
+        if (taskList) {
+          taskList.tasks.push(newTask);
+        }
+      },
+      (error) => {
+        console.error('Error creating task:', error);
+      }
+    );
+    // Reset the fields
     this.taskFormGroups[listId - 1].reset({
       description: '',
       dueDate: new Date(),
@@ -74,6 +83,6 @@ export class ListsComponent implements OnInit {
       this.filteredTaskLists = this.taskLists.slice();
     }
   }
-  
+
   title = 'My lists';
 }

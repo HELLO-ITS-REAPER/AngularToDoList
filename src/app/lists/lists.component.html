@@ -16,7 +16,7 @@
             </label>
         </li>
     </ul>
-    <form (ngSubmit)="addTask(taskList.id)" [formGroup]="taskFormGroups[i]">
+    <form (ngSubmit)="createTask(taskList.id)" [formGroup]="taskFormGroups[i]">
         <input class="newTask" placeholder="description" type="text" required formControlName="description">
         <input class="newTask" placeholder="due date" type="date" required formControlName="dueDate">
         <label>completed</label>

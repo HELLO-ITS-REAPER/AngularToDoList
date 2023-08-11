@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { TaskList } from './taskList';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable, catchError } from 'rxjs';
+import { Task, TaskList } from './taskList';
 
 @Injectable({
   providedIn: 'root'
@@ -14,4 +14,26 @@ export class ApiService {
   getToDoLists(): Observable<TaskList[]> {
     return this.http.get<TaskList[]>(`${this.baseUrl}/ToDoList`);
   }
+
+  deleteTask(listId: number, taskId: number): Observable<HttpResponse<any>> {
+    const url = `${this.baseUrl}/${listId}/task/${taskId}`;
+    return this.http.delete(url, { observe: 'response' }).pipe(
+      catchError((error: any) => {
+        console.error('Error deleting task:', error);
+        console.log('Status code:', error.status);
+        throw error;
+      })
+    );
+  }
+
+  createTask(listId: number, newTask: Task): Observable<HttpResponse<any>> {
+    const url = `${this.baseUrl}/ToDoList/${listId}`;
+    return this.http.post(url, newTask, { observe: 'response' }).pipe(
+      catchError((error: any) => {
+        console.error('Error creating task:', error);
+        console.log('Status code:', error.status);
+        throw error;
+      })
+    );
+  }  
 }
