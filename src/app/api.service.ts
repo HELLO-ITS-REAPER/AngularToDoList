@@ -15,16 +15,6 @@ export class ApiService {
     return this.http.get<TaskList[]>(`${this.baseUrl}/ToDoList`);
   }
 
-  deleteTask(listId: number, taskId: number): Observable<HttpResponse<any>> {
-    const url = `${this.baseUrl}/${listId}/task/${taskId}`;
-    return this.http.delete(url, { observe: 'response' }).pipe(
-      catchError((error: any) => {
-        console.error('Error deleting task:', error);
-        console.log('Status code:', error.status);
-        throw error;
-      })
-    );
-  }
 
   createTask(listId: number, newTask: Task): Observable<HttpResponse<any>> {
     const url = `${this.baseUrl}/ToDoList/${listId}`;
@@ -35,5 +25,16 @@ export class ApiService {
         throw error;
       })
     );
-  }  
+  }
+
+  deleteTask(listId: number, taskId: number): Observable<HttpResponse<any>> {
+    const url = `${this.baseUrl}/ToDoList/${listId}/task/${taskId}`;
+    return this.http.delete(url, { observe: 'response' }).pipe(
+      catchError((error: any) => {
+        console.error('Error deleting task:', error);
+        console.log('Status code:', error.status);
+        throw error;
+      })
+    );
+  }
 }

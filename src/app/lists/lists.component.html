@@ -12,7 +12,7 @@
                 <span [ngClass]="{'completed-task': task.completed}">{{ task.description }}</span>
                 <span class="due-date" *ngIf="task.dueDate">Due: {{ task.dueDate | date }}</span>
                 <button [routerLink]="['/list', taskList.id, 'task', task.id]">details</button>
-                <button (click)="taskListService.deleteTask(taskList.id, task.id)">remove</button>
+                <button (click)="deleteTask(taskList.id, task.id)">remove</button>
             </label>
         </li>
     </ul>

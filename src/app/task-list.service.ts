@@ -78,18 +78,6 @@ export class TaskListService {
     this.taskLists = this.taskLists.filter((taskList) => taskList.id !== taskListId);
   }
 
-  deleteTask(taskListId: number, taskId: number): void {
-    const taskListIndex = this.taskLists.findIndex((taskList) => taskList.id === taskListId);
-    if (taskListIndex !== -1) {
-      const taskIndex = this.taskLists[taskListIndex].tasks.findIndex((task) => task.id === taskId);
-      if (taskIndex !== -1) {
-        this.taskLists[taskListIndex].tasks.splice(taskIndex, 1);
-        this.taskListSubject.next(this.taskLists); // Notify subscribers about the change
-      }
-    }
-    console.log('Delete task with ID:', taskId, 'from list with ID:', taskListId);
-  }
-
   addTaskToList(taskListId: number, newTask: Task): void {
     const taskList = this.taskLists.find((taskList) => taskList.id === taskListId);
     if (taskList) {

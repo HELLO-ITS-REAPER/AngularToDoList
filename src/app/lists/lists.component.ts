@@ -71,6 +71,27 @@ export class ListsComponent implements OnInit {
     });
   }
 
+  deleteTask(listId: number, taskId: number) {
+    this.apiService.deleteTask(listId, taskId).subscribe(
+      () => {
+        console.log('Task deleted successfully');
+        // Find the task list
+        const taskList = this.taskLists.find(list => list.id === listId);
+        if (taskList) {
+          // Find the index of the deleted task within the taskList
+          const deletedTaskIndex = taskList.tasks.findIndex(task => task.id === taskId);
+          if (deletedTaskIndex !== -1) {
+            // Remove the deleted task from the taskList's tasks array
+            taskList.tasks.splice(deletedTaskIndex, 1);
+          }
+        }
+      },
+      (error) => {
+        console.error('Error deleting task:', error);
+      }
+    );
+  }
+
   searchFilter(): void {
     if (this.searchInput) {
       this.filteredTaskLists = this.taskLists.map(taskList => ({
